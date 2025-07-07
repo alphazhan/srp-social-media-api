@@ -1,0 +1,27 @@
+[project]
+name = "srp-social-media-api"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aiosqlite>=0.21.0",
+    "alembic>=1.16.2",
+    "bcrypt>=4.3.0",
+    "fastapi[all]>=0.115.14",
+    "httpx>=0.28.1",
+    "jwt>=1.4.0",
+    "passlib>=1.7.4",
+    "pydantic>=2.11.7",
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.0.0",
+    "python-dotenv>=1.1.1",
+    "python-jose>=3.5.0",
+    "sqlalchemy>=2.0.41",
+]
+
+
+[tool.uv.dependencies]
+pytest = "*"
+pytest-asyncio = "*"
+httpx = "*"
