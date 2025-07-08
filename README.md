@@ -155,7 +155,9 @@ uvx ruff format
 
 - [ ] GET /search/posts - Search posts with filters
 - [ ] GET /search/users - Search users with filters
-- [ ] GET /search/hashtags - Search and trending hashtags GET /search/suggestions - Search suggestions POST /search/save - Save search query
+- [ ] GET /search/hashtags - Search and trending hashtags
+- [ ] GET /search/suggestions - Search suggestions
+- [ ] POST /search/save - Save search query
 - [ ] GET /search/history - User search history
 - [ ] GET /trending - Trending content
 - [ ] GET /discover - Content discovery feed
