@@ -9,6 +9,8 @@ from app.services.post_service import (
     list_all_posts,
     update_post_for_user,
     delete_post_for_user,
+    get_post_by_id,
+    get_posts_by_user_id,
 )
 
 router = APIRouter()
@@ -45,3 +47,13 @@ async def delete_post(
     current_user: User = Depends(get_current_user),
 ):
     await delete_post_for_user(post_id, current_user.id, db)
+
+
+@router.get("/posts/{post_id}", response_model=post_schema.PostBase)
+async def get_post(post_id: int, db: AsyncSession = Depends(get_db)):
+    return await get_post_by_id(post_id, db)
+
+
+@router.get("/posts/user/{user_id}", response_model=list[post_schema.PostBase])
+async def get_posts_by_user(user_id: int, db: AsyncSession = Depends(get_db)):
+    return await get_posts_by_user_id(user_id, db)

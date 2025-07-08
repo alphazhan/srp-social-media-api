@@ -72,3 +72,16 @@ async def delete_post_for_user(post_id: int, user_id: int, db: AsyncSession):
 
     await db.delete(post)
     await db.commit()
+
+
+async def get_post_by_id(post_id: int, db: AsyncSession) -> Post:
+    result = await db.execute(select(Post).where(Post.id == post_id))
+    post = result.scalar_one_or_none()
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    return post
+
+
+async def get_posts_by_user_id(user_id: int, db: AsyncSession) -> list[Post]:
+    result = await db.execute(select(Post).where(Post.user_id == user_id))
+    return result.scalars().all()

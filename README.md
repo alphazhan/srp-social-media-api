@@ -90,17 +90,17 @@ uvx ruff format
 - [x] POST /posts - Submit a new post (text and/or image)
 - [x] PUT /posts/{post_id} - Update post content
 - [x] DELETE /posts/{post_id} - Delete post
-- [ ] GET /posts/{post_id} - Get specific post with analysis results
-- [ ] GET /posts/user/{user_id} - Get all posts by specific user
+- [x] GET /posts/{post_id} - Get specific post with analysis results
+- [x] GET /posts/user/{user_id} - Get all posts by specific user
 
 #### Users
 
 - [x] GET /users/{user_id} - Get user profile
 - [x] GET /users/me - Get **my** profile
-- [ ] POST /users - Create new user account
-- [ ] PUT /users/{user_id} - Edit user profile
-- [ ] DELETE /users/{user_id} - Delete user account
-- [ ] GET /users/{user_id}/posts - Get user's posts
+- [x] POST /users - Create new user account
+- [x] PUT /users/{user_id} - Edit user profile
+- [x] DELETE /users/{user_id} - Delete user account
+- [x] GET /users/{user_id}/posts - Get user's posts
 - [ ] POST /users/{user_id}/follow - Follow another user - OPTIONAL
 - [ ] DELETE /users/{user_id}/follow - Unfollow user - OPTIONAL
 - [ ] GET /users/{user_id}/followers - Get user's followers - OPTIONAL
