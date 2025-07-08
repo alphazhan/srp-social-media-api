@@ -25,5 +25,8 @@ jobs:
             - name: Sync all necessary dependencies
               run: uv sync --all-extras
             
+            - name: Run Ruff linter
+              run: uvx ruff check
+
             - name: Run tests with pytest
-              run: uv run -m pytest app/tests/ --cov=app --cov-report=xml --cov-report=term-missing
+              run: uv run -m pytest

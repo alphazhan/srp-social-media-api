@@ -16,7 +16,6 @@ async def get_db():
 
 async def init_db():
     from app.models.base import Base
-    import app.models.user, app.models.post, app.models.comment, app.models.like
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)

@@ -5,7 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database.connection import get_db
 from app.models.user import User
 from app.schemas import comment as comment_schema
-from app.schemas import like as like_schema
 from app.utils.security import get_current_user
 from app.services.comment_service import (
     create_comment,

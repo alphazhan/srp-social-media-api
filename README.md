@@ -75,7 +75,14 @@ sqlite> [CTRL+D] # To exit the terminal
 Perform linting:
 
 ```bash
+uvx ruff check
 uvx ruff format
+```
+
+Run tests:
+
+```bash
+uv run -m pytest
 ```
 
 ---
