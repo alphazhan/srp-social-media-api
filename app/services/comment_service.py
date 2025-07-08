@@ -4,7 +4,7 @@ from fastapi import HTTPException
 
 from app.models.comment import Comment
 from app.models.post import Post
-from app.schemas.comment import CommentCreate
+from app.schemas.comment import CommentCreate, CommentUpdate
 
 
 async def create_comment(
@@ -33,3 +33,29 @@ async def get_comments_for_post(post_id: int, db: AsyncSession):
     """
     result = await db.execute(select(Comment).where(Comment.post_id == post_id))
     return result.scalars().all()
+
+
+async def update_comment(
+    comment_id: int, user_id: int, update: CommentUpdate, db: AsyncSession
+) -> Comment:
+    result = await db.execute(select(Comment).where(Comment.id == comment_id))
+    comment = result.scalar_one_or_none()
+    if not comment or comment.user_id != user_id:
+        raise HTTPException(status_code=403, detail="Not allowed to edit this comment")
+
+    comment.text = update.text
+    await db.commit()
+    await db.refresh(comment)
+    return comment
+
+
+async def delete_comment(comment_id: int, user_id: int, db: AsyncSession):
+    result = await db.execute(select(Comment).where(Comment.id == comment_id))
+    comment = result.scalar_one_or_none()
+    if not comment or comment.user_id != user_id:
+        raise HTTPException(
+            status_code=403, detail="Not allowed to delete this comment"
+        )
+
+    await db.delete(comment)
+    await db.commit()

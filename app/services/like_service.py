@@ -44,3 +44,8 @@ async def unlike_post_by_user(post_id: int, user_id: int, db: AsyncSession):
 
     await db.delete(like)
     await db.commit()
+
+
+async def get_likes_for_post(post_id: int, db: AsyncSession):
+    result = await db.execute(select(Like).where(Like.post_id == post_id))
+    return result.scalars().all()

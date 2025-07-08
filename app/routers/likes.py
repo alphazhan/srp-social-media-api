@@ -4,7 +4,11 @@ from app.database.connection import get_db
 from app.models.user import User
 from app.schemas import like as like_schema
 from app.utils.security import get_current_user
-from app.services.like_service import like_post_by_user, unlike_post_by_user
+from app.services.like_service import (
+    get_likes_for_post,
+    like_post_by_user,
+    unlike_post_by_user,
+)
 
 router = APIRouter()
 
@@ -25,3 +29,8 @@ async def unlike_post(
     current_user: User = Depends(get_current_user),
 ):
     await unlike_post_by_user(post_id, current_user.id, db)
+
+
+@router.get("/posts/{post_id}/likes", response_model=list[like_schema.LikeBase])
+async def get_likes(post_id: int, db: AsyncSession = Depends(get_db)):
+    return await get_likes_for_post(post_id, db)

@@ -12,7 +12,6 @@ A full-featured REST API for a social media backend, built with FastAPI and SQLi
 | Framework     | FastAPI            |
 | ORM           | SQLAlchemy 2.0     |
 | DB (Dev)      | SQLite             |
-| DB (Prod)     | PostgreSQL         |
 | Auth          | JWT (PyJWT)        |
 | Hashing       | bcrypt (passlib)   |
 | Validation    | Pydantic           |
@@ -113,10 +112,10 @@ uvx ruff format
 - [x] DELETE /posts/{post_id}/like - Unlike a post
 - [x] POST /posts/{post_id}/comments - Add comment to post
 - [x] GET /posts/{post_id}/comments - Get all comments on post
-- [ ] GET /posts/{post_id}/likes - Get all likes for a post
-- [ ] PUT /comments/{comment_id} - Edit comment
-- [ ] DELETE /comments/{comment_id} - Delete comment
-- [ ] `total_posts` of any `user` is always equal to 0. Fix it.
+- [x] GET /posts/{post_id}/likes - Get all likes for a post
+- [x] PUT /comments/{comment_id} - Edit comment
+- [x] DELETE /comments/{comment_id} - Delete comment
+- [x] `total_posts` of any `user` is always equal to 0. Fix it.
 
 ### B. Authentication and Authorization System
 

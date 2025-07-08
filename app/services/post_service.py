@@ -3,6 +3,7 @@ from sqlalchemy.future import select
 from fastapi import HTTPException
 
 from app.models.post import Post
+from app.models.user import User
 from app.schemas.post import PostCreate, PostUpdate
 
 
@@ -14,6 +15,12 @@ async def create_post_for_user(
     """
     post = Post(**post_in.model_dump(), user_id=user_id)
     db.add(post)
+
+    # Increment the user's total_posts count
+    user_result = await db.execute(select(User).where(User.id == user_id))
+    user = user_result.scalar_one()
+    user.total_posts += 1
+
     await db.commit()
     await db.refresh(post)
     return post
@@ -56,6 +63,12 @@ async def delete_post_for_user(post_id: int, user_id: int, db: AsyncSession):
 
     if not post or post.user_id != user_id:
         raise HTTPException(status_code=403, detail="Unauthorized or not found")
+
+    # Decrement total_posts count before deleting
+    user_result = await db.execute(select(User).where(User.id == user_id))
+    user = user_result.scalar_one_or_none()
+    if user and user.total_posts > 0:
+        user.total_posts -= 1
 
     await db.delete(post)
     await db.commit()
