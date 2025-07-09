@@ -25,13 +25,15 @@ async def test_edit_user_profile(client, auth_headers, unique_user_data):
     user_id = me.json()["id"]
 
     update_data = {
-        "username": "new_name",
         "email": "account@dot.com",
     }
 
     res = await client.put(f"/users/{user_id}", json=update_data, headers=auth_headers)
     assert res.status_code == 200
     assert res.json()["email"] == "account@dot.com"
+    assert (
+        res.json()["username"] == unique_user_data["username"]
+    )  # Should stay the same
 
 
 @pytest.mark.asyncio
