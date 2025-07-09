@@ -27,7 +27,7 @@ async def test_edit_user_profile(client, auth_headers, unique_user_data):
     update_data = {
         "full_name": "Updated User",
         "bio": "I love testing",
-        "profile_image_url": "https://example.com/avatar.png"
+        "profile_image_url": "https://example.com/avatar.png",
     }
 
     res = await client.put(f"/users/{user_id}", json=update_data, headers=auth_headers)

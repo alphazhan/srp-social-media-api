@@ -4,7 +4,9 @@ import pytest
 @pytest.mark.asyncio
 async def test_like_post(client, auth_headers):
     # Create a post
-    post = await client.post("/posts/", json={"content": "Post to like"}, headers=auth_headers)
+    post = await client.post(
+        "/posts/", json={"content": "Post to like"}, headers=auth_headers
+    )
     post_id = post.json()["id"]
 
     # Like it
@@ -15,7 +17,9 @@ async def test_like_post(client, auth_headers):
 @pytest.mark.asyncio
 async def test_get_likes_for_post(client, auth_headers):
     # Create a post
-    post = await client.post("/posts/", json={"content": "Popular post"}, headers=auth_headers)
+    post = await client.post(
+        "/posts/", json={"content": "Popular post"}, headers=auth_headers
+    )
     post_id = post.json()["id"]
 
     # Like it
@@ -31,7 +35,9 @@ async def test_get_likes_for_post(client, auth_headers):
 @pytest.mark.asyncio
 async def test_unlike_post(client, auth_headers):
     # Create a post
-    post = await client.post("/posts/", json={"content": "To be unliked"}, headers=auth_headers)
+    post = await client.post(
+        "/posts/", json={"content": "To be unliked"}, headers=auth_headers
+    )
     post_id = post.json()["id"]
 
     # Like first

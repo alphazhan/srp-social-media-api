@@ -5,7 +5,7 @@ import pytest
 async def test_create_post(client, auth_headers):
     post_data = {
         "content": "Hello from test!",
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://example.com/image.png",
     }
     res = await client.post("/posts/", json=post_data, headers=auth_headers)
     assert res.status_code == 200
@@ -26,7 +26,9 @@ async def test_list_all_posts(client, auth_headers):
 @pytest.mark.asyncio
 async def test_update_post(client, auth_headers):
     # Create a post
-    post = await client.post("/posts/", json={"content": "Old content"}, headers=auth_headers)
+    post = await client.post(
+        "/posts/", json={"content": "Old content"}, headers=auth_headers
+    )
     post_id = post.json()["id"]
 
     # Update the post
@@ -40,7 +42,9 @@ async def test_update_post(client, auth_headers):
 @pytest.mark.asyncio
 async def test_delete_post(client, auth_headers):
     # Create a post
-    post = await client.post("/posts/", json={"content": "Temp post"}, headers=auth_headers)
+    post = await client.post(
+        "/posts/", json={"content": "Temp post"}, headers=auth_headers
+    )
     post_id = post.json()["id"]
 
     # Delete it
@@ -55,7 +59,9 @@ async def test_delete_post(client, auth_headers):
 @pytest.mark.asyncio
 async def test_get_post_by_id(client, auth_headers):
     # Create a post
-    post = await client.post("/posts/", json={"content": "Get me!"}, headers=auth_headers)
+    post = await client.post(
+        "/posts/", json={"content": "Get me!"}, headers=auth_headers
+    )
     post_id = post.json()["id"]
 
     # Get it back
@@ -71,7 +77,9 @@ async def test_get_posts_by_user(client, auth_headers):
     user_id = me.json()["id"]
 
     # Create post
-    await client.post("/posts/", json={"content": "User-specific post"}, headers=auth_headers)
+    await client.post(
+        "/posts/", json={"content": "User-specific post"}, headers=auth_headers
+    )
 
     res = await client.get(f"/posts/user/{user_id}")
     assert res.status_code == 200
