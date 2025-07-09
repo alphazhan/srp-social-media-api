@@ -12,3 +12,6 @@ dependencies = [
     "transformers>=4.53.1",
     "prometheus-fastapi-instrumentator>=7.1.0",
 ]
+
+[tool.uv.dependencies]
+prometheus-fastapi-instrumentator = "*"
