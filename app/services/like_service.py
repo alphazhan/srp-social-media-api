@@ -49,3 +49,10 @@ async def unlike_post_by_user(post_id: int, user_id: int, db: AsyncSession):
 async def get_likes_for_post(post_id: int, db: AsyncSession):
     result = await db.execute(select(Like).where(Like.post_id == post_id))
     return result.scalars().all()
+
+
+async def has_user_liked_post(post_id: int, user_id: int, db: AsyncSession) -> bool:
+    result = await db.execute(
+        select(Like).where(Like.post_id == post_id, Like.user_id == user_id)
+    )
+    return result.scalar_one_or_none() is not None

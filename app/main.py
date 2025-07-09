@@ -3,9 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import users, auth, posts, comments, likes, admin
 from app.utils.dependencies import lifespan
-from app.routers import ws  
-
-app.include_router(ws.router) 
+from app.routers import ws
 
 app = FastAPI(
     title="Social Media API",
@@ -13,6 +11,8 @@ app = FastAPI(
     version="1.0",
     lifespan=lifespan,
 )
+
+app.include_router(ws.router)
 
 # Allow requests from your frontend (adjust port if needed)
 app.add_middleware(

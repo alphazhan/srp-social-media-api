@@ -7,6 +7,7 @@ from app.utils.security import get_current_user
 from app.services.post_service import (
     create_post_for_user,
     list_all_posts,
+    list_posts_with_user_likes,
     update_post_for_user,
     delete_post_for_user,
     get_post_by_id,
@@ -28,6 +29,14 @@ async def create_post(
 @router.get("/", response_model=list[post_schema.PostBase])
 async def get_posts(db: AsyncSession = Depends(get_db)):
     return await list_all_posts(db)
+
+@router.get("/feed", response_model=list[post_schema.PostExtended])
+async def get_posts_with_user_likes(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    return await list_posts_with_user_likes(db, current_user.id)
+
 
 
 @router.put("/{post_id}", response_model=post_schema.PostBase)

@@ -8,6 +8,7 @@ from app.services.like_service import (
     get_likes_for_post,
     like_post_by_user,
     unlike_post_by_user,
+    has_user_liked_post,
 )
 
 router = APIRouter()
@@ -34,3 +35,12 @@ async def unlike_post(
 @router.get("/posts/{post_id}/likes", response_model=list[like_schema.LikeBase])
 async def get_likes(post_id: int, db: AsyncSession = Depends(get_db)):
     return await get_likes_for_post(post_id, db)
+
+
+@router.get("/posts/{post_id}/like-status", response_model=bool)
+async def check_if_user_liked_post(
+    post_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    return await has_user_liked_post(post_id, current_user.id, db)

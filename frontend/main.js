@@ -93,7 +93,7 @@ function logout() {
 // Create Post
 function createPost() {
     const content = document.getElementById("post-content").value;
-    fetch(`${BASE_URL}/posts`, {
+    fetch(`${BASE_URL}/posts/feed`, {
         method: "POST",
         headers: {
             "Authorization": "Bearer " + token,
@@ -111,9 +111,28 @@ function createPost() {
     });
 }
 
-// Load Posts
+// Like
+function likePost(postId, from = "single") {
+    fetch(`${BASE_URL}/posts/${postId}/like`, {
+        method: "POST",
+        headers: { "Authorization": "Bearer " + token }
+    }).then(() => {
+        from === "single" ? loadSinglePost(postId) : loadPosts();
+    });
+}
+
+function unlikePost(postId, from = "single") {
+    fetch(`${BASE_URL}/posts/${postId}/like`, {
+        method: "DELETE",
+        headers: { "Authorization": "Bearer " + token }
+    }).then(() => {
+        from === "single" ? loadSinglePost(postId) : loadPosts();
+    });
+}
+
+
 function loadPosts() {
-    fetch(`${BASE_URL}/posts`, {
+    fetch(`${BASE_URL}/posts/feed`, {
         headers: { "Authorization": "Bearer " + token }
     })
     .then(res => res.json())
@@ -121,34 +140,36 @@ function loadPosts() {
         const postsDiv = document.getElementById("posts");
         if (!postsDiv) return;
         postsDiv.innerHTML = "";
+
         posts.forEach(post => {
             const postDiv = document.createElement("div");
             postDiv.className = "post";
+            postDiv.id = `post-${post.id}`;
+            
+            const likeBtn = post.liked
+                ? `<button onclick="unlikePost(${post.id}, 'posts')">❤️ Liked</button>`
+                : `<button onclick="likePost(${post.id}, 'posts')">💔 Like</button>`;
+
             postDiv.innerHTML = `
                 <p><strong>${post.user?.username || "Anonymous"}</strong>: ${post.content}</p>
-                <button onclick="likePost(${post.id})">❤️ Like</button>
+                ${likeBtn}
                 <a href="post.html?id=${post.id}">🧾 View</a>
                 <input type="text" id="comment-${post.id}" placeholder="Add a comment..." />
                 <button onclick="commentPost(${post.id})">Comment</button>
                 <div id="comments-${post.id}"></div>
             `;
+
             postsDiv.appendChild(postDiv);
             loadComments(post.id);
         });
     });
 }
 
-// Like
-function likePost(postId) {
-    fetch(`${BASE_URL}/posts/${postId}/like`, {
-        method: "POST",
-        headers: { "Authorization": "Bearer " + token }
-    });
-}
+
 
 // Comment
 function commentPost(postId) {
-    const text = document.getElementById(`comment-text`).value;
+    const text = document.getElementById(`comment-${postId}`).value;
     fetch(`${BASE_URL}/posts/${postId}/comments`, {
         method: "POST",
         headers: {
@@ -158,7 +179,7 @@ function commentPost(postId) {
         body: JSON.stringify({ text })
     }).then(() => {
         loadComments(postId);
-        document.getElementById(`comment-text`).value = "";
+        document.getElementById(`comment-${postId}`).value = "";
     });
 }
 
@@ -181,20 +202,31 @@ function loadComments(postId) {
     });
 }
 
-// Load single post by ID
 function loadSinglePost(postId) {
     fetch(`${BASE_URL}/posts/${postId}`, {
         headers: { "Authorization": "Bearer " + token }
     })
     .then(res => res.json())
     .then(post => {
-        const postDiv = document.getElementById("single-post");
-        postDiv.innerHTML = `
-            <p><strong>${post.user?.username || "Anonymous"}</strong>: ${post.content}</p>
-            <button onclick="likePost(${post.id})">❤️ Like</button>
-        `;
+        fetch(`${BASE_URL}/posts/${postId}/like-status`, {
+            headers: { "Authorization": "Bearer " + token }
+        })
+        .then(res => res.json())
+        .then(liked => {
+            const postDiv = document.getElementById("single-post");
+            
+            const likeBtn = liked
+                ? `<button onclick="unlikePost(${post.id}, 'single')">❤️ Liked</button>`
+                : `<button onclick="likePost(${post.id}, 'single')">💔 Like</button>`;
+
+            postDiv.innerHTML = `
+                <p><strong>${post.user?.username || "Anonymous"}</strong>: ${post.content}</p>
+                ${likeBtn}
+            `;
+        });
     });
 }
+
 
 // Load profile data
 function loadUserProfile(userId) {

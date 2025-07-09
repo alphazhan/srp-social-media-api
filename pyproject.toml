@@ -27,6 +27,11 @@ pytest = "*"
 pytest-asyncio = "*"
 httpx = "*"
 
+[tool.uv.workspace]
+members = [
+    "ml",
+]
+
 
 [tool.pytest.ini_options]
 addopts = "--cov=app --cov-report=term-missing --cov-report=xml"

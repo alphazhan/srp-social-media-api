@@ -21,6 +21,16 @@ async def get_my_profile(current_user: User = Depends(get_current_user)):
     return current_user
 
 
+@router.patch("/me", response_model=user_schema.UserBase)
+async def update_my_profile(
+    update: user_schema.UserUpdate,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    return await update_user_profile(current_user.id, update, db)
+
+
+
 @router.get("/{user_id}", response_model=user_schema.UserBase)
 async def get_user(user_id: int, db: AsyncSession = Depends(get_db)):
     return await get_user_by_id(user_id, db)

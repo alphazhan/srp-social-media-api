@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Settings - SRP</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="main.js"></script>
+
 </head>
+
 <body class="feed-body">
     <div class="navbar">
         <div class="navbar-left">
@@ -18,49 +22,71 @@
         </div>
     </div>
 
-   <div class="settings-container">
-    <h2>Update Your Profile</h2>
-    <form class="settings-form">
-        <input type="text" id="new-username" placeholder="New Username">
-        <input type="email" id="new-email" placeholder="New Email">
-        <input type="password" id="new-password" placeholder="New Password">
-        <button type="button" onclick="updateProfile()">Save Changes</button>
-        <p id="settings-result" class="error-text"></p>
-    </form>
-</div>
+    <div class="settings-container">
+        <h2>Update Your Profile</h2>
+        <form class="settings-form">
+            <input type="text" id="new-username" placeholder="New Username">
+            <input type="email" id="new-email" placeholder="New Email">
+            <input type="password" id="new-password" placeholder="New Password">
+            <button type="button" id="save-settings">Save Changes</button>
+            <p id="settings-result" class="error-text"></p>
+        </form>
+    </div>
 
 
-    <script src="main.js"></script>
     <script>
+        const BASE_URL = "http://localhost:8000"
+
         document.addEventListener("DOMContentLoaded", () => {
             const saveBtn = document.getElementById("save-settings");
+            console.log("FIXME1")
             saveBtn.addEventListener("click", () => {
-                const username = document.getElementById("new-username").value;
-                const email = document.getElementById("new-email").value;
-                const password = document.getElementById("new-password").value;
+                console.log("FIXME2")
 
-                fetch("http://localhost:8000/users/me", {
+                const username = document.getElementById("new-username").value.trim();
+                const email = document.getElementById("new-email").value.trim();
+                const password = document.getElementById("new-password").value.trim();
+
+                const payload = {};
+                if (username) payload.username = username;
+                if (email) payload.email = email;
+                if (password) payload.password = password;
+
+                console.log("FIXME payload:", JSON.stringify(payload))
+
+                if (Object.keys(payload).length === 0) {
+                    document.getElementById("settings-result").innerText = "⚠️ Nothing to update.";
+                    return;
+                }
+
+                fetch(`${BASE_URL}/users/me`, {
                     method: "PUT",
                     headers: {
                         "Authorization": "Bearer " + localStorage.getItem("token"),
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ username, email, password })
+                    body: JSON.stringify(payload)
                 })
-                .then(res => {
-                    if (res.ok) {
-                        document.getElementById("settings-result").innerText = "✅ Profile updated!";
-                    } else {
-                        res.json().then(data => {
-                            document.getElementById("settings-result").innerText = data.detail || "Error.";
-                        });
-                    }
-                })
-                .catch(() => {
-                    document.getElementById("settings-result").innerText = "⚠️ Network error.";
-                });
+                    .then(res => {
+                        if (res.ok) {
+                            document.getElementById("settings-result").innerText = "✅ Profile updated!";
+                            document.getElementById("new-username").value = "";
+                            document.getElementById("new-email").value = "";
+                            document.getElementById("new-password").value = "";
+                        } else {
+                            res.json().then(data => {
+                                document.getElementById("settings-result").innerText =
+                                    JSON.stringify(data.detail) || "Error.";
+                            });
+                        }
+                    })
+                    .catch(() => {
+                        document.getElementById("settings-result").innerText = "⚠️ Network error.";
+                    });
             });
         });
     </script>
+
 </body>
+
 </html>

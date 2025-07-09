@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional
 from datetime import datetime
 
@@ -25,9 +25,12 @@ class PostBase(BaseModel):
     id: int
     content: str
     image_url: Optional[str]
-    user_id: int  # ID of the author
+    user_id: int
     created_at: datetime
     updated_at: Optional[datetime]
 
-    class Config:
-        orm_mode = True  # Enables compatibility with SQLAlchemy models
+    model_config = ConfigDict(from_attributes=True)
+
+
+class PostExtended(PostBase):
+    liked: bool

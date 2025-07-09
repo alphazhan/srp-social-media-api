@@ -2,12 +2,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from fastapi import HTTPException
 
+from app.models.like import Like
 from app.models.post import Post
 from app.models.user import User
-from app.schemas.post import PostCreate, PostUpdate
-from app.routers.ws import notify_all 
-
-
+from app.schemas.post import PostBase, PostCreate, PostExtended, PostUpdate
+from app.routers.ws import notify_all
 
 
 async def create_post_for_user(
@@ -36,6 +35,26 @@ async def list_all_posts(db: AsyncSession):
     """
     result = await db.execute(select(Post))
     return result.scalars().all()
+
+
+async def list_posts_with_user_likes(db: AsyncSession, user_id: int) -> list[dict]:
+    result = await db.execute(select(Post).order_by(Post.created_at.desc()))
+    posts = result.scalars().all()
+
+    # Fetch all liked post_ids for this user in one go
+    liked_ids = await db.execute(
+        select(Like.post_id).where(Like.user_id == user_id)
+    )
+    liked_set = set(post_id for (post_id,) in liked_ids.all())
+
+    # Attach liked field to each post as a dict
+    return [
+        PostExtended(
+            **PostBase.model_validate(post).model_dump(),
+            liked=(post.id in liked_set)
+        )
+        for post in posts
+    ]
 
 
 async def update_post_for_user(

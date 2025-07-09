@@ -33,9 +33,12 @@ class UserCreate(BaseModel):
 
 
 class UserUpdate(BaseModel):
-    full_name: Optional[str] = None
-    bio: Optional[str] = None
-    profile_image_url: Optional[str] = None
+    username: Optional[str] = None
+    email: Optional[EmailStr] = None
+    password: Optional[str] = None  # Will be hashed
+    # full_name: Optional[str] = None
+    # bio: Optional[str] = None
+    # profile_image_url: Optional[str] = None
 
 
 # Schema used when sending user info back to the client (response)

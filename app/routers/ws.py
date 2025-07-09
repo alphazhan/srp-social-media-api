@@ -1,8 +1,10 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+import asyncio
 
 router = APIRouter()
 
 connected_clients = []
+
 
 @router.websocket("/ws/feed")
 async def websocket_feed(websocket: WebSocket):
@@ -14,10 +16,11 @@ async def websocket_feed(websocket: WebSocket):
     except WebSocketDisconnect:
         connected_clients.remove(websocket)
 
+
 # Функция, которую можно вызывать из create_post
 async def notify_all(message: str):
     for ws in connected_clients:
         try:
             await ws.send_text(message)
-        except:
-            pass  # мб отключился
+        except (RuntimeError, asyncio.CancelledError) as e:
+            print(f"WebSocket send failed: {e}")  # client may have disconnected
