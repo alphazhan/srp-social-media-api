@@ -286,3 +286,53 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginBtn = document.getElementById("login-btn");
     if (loginBtn) loginBtn.addEventListener("click", login);
 });
+function setupWebSocket() {
+    const socket = new WebSocket("ws://localhost:8000/ws/feed");
+
+    socket.onopen = () => {
+        console.log("🔌 WebSocket connected");
+    };
+
+    socket.onmessage = (event) => {
+        const msg = event.data;
+        alert("🔥 New post incoming: " + msg);
+        loadPosts(); 
+    };
+
+    socket.onclose = () => {
+        console.log("❌ WebSocket disconnected");
+    };
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    setupWebSocket(); 
+});
+document.addEventListener("DOMContentLoaded", () => {
+    const submitBtn = document.getElementById("submit-post");
+    if (submitBtn) {
+        submitBtn.addEventListener("click", () => {
+            const content = document.getElementById("post-content").value;
+            fetch("http://localhost:8000/posts", {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token"),
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ content })
+            })
+            .then(res => {
+                if (res.ok) {
+                    document.getElementById("post-result").innerText = "✅ Post published!";
+                    document.getElementById("post-content").value = "";
+                } else {
+                    res.json().then(data => {
+                        document.getElementById("post-result").innerText = data.detail || "Something went wrong.";
+                    });
+                }
+            })
+            .catch(() => {
+                document.getElementById("post-result").innerText = "⚠️ Network error.";
+            });
+        });
+    }
+});

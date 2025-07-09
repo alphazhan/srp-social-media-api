@@ -2,18 +2,78 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Profile</title>
+    <title>Profile - SRP</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <h1>User Profile</h1>
+<body class="feed-body">
+    <div class="navbar">
+        <div class="navbar-left">
+            <h2>👤 Profile</h2>
+        </div>
+        <div class="navbar-right">
+            <a href="index.html">🏠 Home</a>
+            <a href="create-post.html">➕ Post</a>
+            <a href="settings.html">⚙️ Settings</a>
+            <button onclick="logout()">🚪 Logout</button>
+        </div>
+    </div>
 
-    <div id="profile-info"></div>
-    <h2>User Posts</h2>
-    <div id="user-posts"></div>
+    <main class="profile-container">
+        <div class="profile-info">
+            <h3 id="username">Username: ...</h3>
+            <p id="email">Email: ...</p>
+        </div>
 
-    <a href="index.html">⬅ Back to feed</a>
+        <hr />
+
+        <h4>📝 My Posts</h4>
+        <div id="user-posts"></div>
+    </main>
 
     <script src="main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get("id");
+
+            if (!userId) {
+                document.querySelector(".profile-info").innerHTML = "<p>❌ No user found.</p>";
+                return;
+            }
+
+            fetch(`http://localhost:8000/users/${userId}`, {
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                }
+            })
+            .then(res => res.json())
+            .then(user => {
+                document.getElementById("username").innerText = "Username: " + user.username;
+                document.getElementById("email").innerText = "Email: " + (user.email || "Not set");
+            });
+
+            fetch("http://localhost:8000/posts", {
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                }
+            })
+            .then(res => res.json())
+            .then(posts => {
+                const userPosts = posts.filter(p => p.user?.id == userId);
+                const postDiv = document.getElementById("user-posts");
+                if (userPosts.length === 0) {
+                    postDiv.innerHTML = "<p>No posts yet.</p>";
+                    return;
+                }
+
+                userPosts.forEach(post => {
+                    const div = document.createElement("div");
+                    div.className = "post";
+                    div.innerHTML = `<p>${post.content}</p>`;
+                    postDiv.appendChild(div);
+                });
+            });
+        });
+    </script>
 </body>
 </html>

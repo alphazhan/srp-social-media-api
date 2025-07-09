@@ -5,6 +5,9 @@ from fastapi import HTTPException
 from app.models.post import Post
 from app.models.user import User
 from app.schemas.post import PostCreate, PostUpdate
+from app.routers.ws import notify_all 
+
+
 
 
 async def create_post_for_user(
@@ -23,6 +26,7 @@ async def create_post_for_user(
 
     await db.commit()
     await db.refresh(post)
+    await notify_all(f"New post: {post.content}")
     return post
 
 
