@@ -50,8 +50,8 @@ jobs:
         with:
           version: "0.4.18"
 
-      - name: Install Python 3.13
-        run: uv python install 3.13
+      - name: Install Python 3.11
+        run: uv python install 3.11
 
       - name: Sync ML dependencies
         run: uv sync
