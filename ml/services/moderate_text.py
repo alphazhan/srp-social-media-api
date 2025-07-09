@@ -87,7 +87,8 @@ def moderate_text(text: str) -> dict:
 # Example usage
 if __name__ == "__main__":
     # text = "You should just disappear from this world."
-    text = "I'm going to find you and make you pay."
+    # text = "I'm going to find you and make you pay."
+    text = "Shiloh dynasty"
 
     print(moderate_text(text))  # Clean output
     print()

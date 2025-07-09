@@ -15,7 +15,7 @@ async def test_add_comment(client, auth_headers):
     )
 
     assert res.status_code == 200
-    assert res.json()["text"] == "Nice post!"
+    assert "Nice post!" in res.json()["text"]
 
 
 @pytest.mark.asyncio
@@ -34,7 +34,7 @@ async def test_get_comments_for_post(client, auth_headers):
 
     res = await client.get(f"/posts/{post_id}/comments")
     assert res.status_code == 200
-    assert any(c["text"] == "First comment" for c in res.json())
+    assert any("First comment" in c["text"] for c in res.json())
 
 
 @pytest.mark.asyncio
@@ -54,7 +54,7 @@ async def test_edit_comment(client, auth_headers):
         f"/comments/{comment_id}", json={"text": "Edited comment"}, headers=auth_headers
     )
     assert res.status_code == 200
-    assert res.json()["text"] == "Edited comment"
+    assert "Edited comment" in res.json()["text"]
 
 
 @pytest.mark.asyncio

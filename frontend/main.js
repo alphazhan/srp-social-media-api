@@ -1,5 +1,6 @@
 let token = localStorage.getItem("token");
 let currentUserId = null;
+
 const BASE_URL = "http://localhost:8000";
 
 // Authorization check for protected pages
@@ -95,7 +96,7 @@ function logout() {
 // Create Post
 function createPost() {
   const content = document.getElementById("post-content").value;
-  fetch(`${BASE_URL}/posts/feed`, {
+  fetch(`${BASE_URL}/posts`, {
     method: "POST",
     headers: {
       Authorization: "Bearer " + token,
@@ -152,7 +153,7 @@ function loadPosts() {
           : `<button onclick="likePost(${post.id}, 'posts')">💔 Like</button>`;
 
         postDiv.innerHTML = `
-                <p><strong>${post.user?.username || "Anonymous"}</strong>: ${post.content}</p>
+                <p><strong>${post.user?.username || "Anonymous"}</strong>: <p style="white-space: pre-line;">${post.content}</p></p>
                 ${likeBtn}
                 <a href="post.html?id=${post.id}">🧾 View</a>
                 <input type="text" id="comment-${post.id}" placeholder="Add a comment..." />
@@ -292,11 +293,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (protectedPages.includes(currentPage)) checkAuth();
 
-  if (currentPage === "create-post.html") {
-    const btn = document.getElementById("submit-post");
-    if (btn) btn.addEventListener("click", createPost);
-  }
-
   if (currentPage === "settings.html") {
     const btn = document.getElementById("save-settings");
     if (btn) btn.addEventListener("click", saveSettings);
@@ -351,7 +347,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (submitBtn) {
     submitBtn.addEventListener("click", () => {
       const content = document.getElementById("post-content").value;
-      fetch("http://localhost:8000/posts", {
+      fetch(`${BASE_URL}/posts`, {
         method: "POST",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),

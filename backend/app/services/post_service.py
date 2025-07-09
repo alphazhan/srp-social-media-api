@@ -7,6 +7,7 @@ from app.models.post import Post
 from app.models.user import User
 from app.schemas.post import PostBase, PostCreate, PostExtended, PostUpdate
 from app.routers.ws import notify_all
+from app.services.ml_service import detect_language, extract_hashtags, moderate_text
 
 
 async def create_post_for_user(
@@ -14,17 +15,41 @@ async def create_post_for_user(
 ) -> Post:
     """
     Create a new post associated with a given user.
+    Includes ML moderation, language detection, and hashtag generation.
     """
-    post = Post(**post_in.model_dump(), user_id=user_id)
+    original_text = post_in.content
+
+    # 1. Moderate text
+    moderation_result = await moderate_text(original_text)
+    if moderation_result["category"] != "OK":
+        raise HTTPException(
+            status_code=400,
+            detail=f"Content rejected: {moderation_result['description']}",
+        )
+
+    # 2. Detect language
+    language = await detect_language(original_text)
+
+    # 3. Extract hashtags
+    hashtags = await extract_hashtags(original_text)
+    hashtag_line = " ".join(f"#{tag}" for tag in hashtags)
+
+    # 4. Augment content
+    augmented_text = (
+        f"{original_text}\n\nDetected language: {language}.\n{hashtag_line}"
+    )
+
+    # 5. Create post and update user
+    post = Post(content=augmented_text, image_url=post_in.image_url, user_id=user_id)
     db.add(post)
 
-    # Increment the user's total_posts count
-    user_result = await db.execute(select(User).where(User.id == user_id))
-    user = user_result.scalar_one()
+    result = await db.execute(select(User).where(User.id == user_id))
+    user = result.scalar_one()
     user.total_posts += 1
 
     await db.commit()
     await db.refresh(post)
+
     await notify_all(f"New post: {post.content}")
     return post
 
@@ -59,6 +84,8 @@ async def update_post_for_user(
 ) -> Post:
     """
     Update a post if it belongs to the current user.
+    Includes content moderation, language detection, and hashtag generation
+    when the post content is being changed.
     """
     result = await db.execute(select(Post).where(Post.id == post_id))
     post = result.scalar_one_or_none()
@@ -66,7 +93,32 @@ async def update_post_for_user(
     if not post or post.user_id != user_id:
         raise HTTPException(status_code=403, detail="Unauthorized or not found")
 
-    for key, value in update_data.model_dump(exclude_unset=True).items():
+    update_fields = update_data.model_dump(exclude_unset=True)
+
+    if "content" in update_fields:
+        new_content = update_fields["content"]
+
+        # 1. Moderate text
+        moderation_result = await moderate_text(new_content)
+        if moderation_result["category"] != "OK":
+            raise HTTPException(
+                status_code=400,
+                detail=f"Content rejected: {moderation_result['description']}",
+            )
+
+        # 2. Detect language
+        language = await detect_language(new_content)
+
+        # 3. Extract hashtags
+        hashtags = await extract_hashtags(new_content)
+        hashtag_line = " ".join(f"#{tag}" for tag in hashtags)
+
+        # 4. Augment content
+        update_fields["content"] = (
+            f"{new_content}\n\nDetected language: {language}\n{hashtag_line}"
+        )
+
+    for key, value in update_fields.items():
         setattr(post, key, value)
 
     await db.commit()

@@ -58,4 +58,4 @@ async def test_get_user_posts(client, auth_headers):
 
     res = await client.get(f"/users/{user_id}/posts")
     assert res.status_code == 200
-    assert any(p["content"] == "User Post" for p in res.json())
+    assert any("User Post" in p["content"] for p in res.json())

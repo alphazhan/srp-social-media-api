@@ -10,6 +10,9 @@ services:
       - backend
     depends_on:
       - ml
+    environment:
+      - ML_SERVICE_URL=http://ml:8001
+      - FRONTEND_URL=http://localhost:3000
 
   frontend:
     build:
@@ -22,6 +25,8 @@ services:
       - backend
     depends_on:
       - backend
+    environment:
+      VITE_API_BASE_URL: http://backend:8000
 
   ml:
     build:
@@ -36,6 +41,7 @@ services:
       - HF_HOME=/root/.cache/huggingface
       - TRANSFORMERS_CACHE=/root/.cache/huggingface
       - NLTK_DATA=/root/nltk_data
+      - FRONTEND_URL=http://frontend:3000
     volumes:
       - ./.cache/huggingface:/root/.cache/huggingface
       - ./.cache/nltk:/root/nltk_data

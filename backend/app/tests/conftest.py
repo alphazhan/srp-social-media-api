@@ -1,4 +1,6 @@
 # Fixtures and shared test setup
+from unittest.mock import AsyncMock, Mock
+import httpx
 import pytest
 import pytest_asyncio
 import uuid
@@ -92,3 +94,34 @@ async def auth_headers(client, unique_user_data):
 
     token = login_resp.json()["access_token"]
     return {"Authorization": f"Bearer {token}"}
+
+
+@pytest.fixture(autouse=True)
+def mock_httpx_async_client(mocker):
+    # Patch httpx.AsyncClient (the class itself)
+    mock_client_constructor = mocker.patch("httpx.AsyncClient")
+
+    # This mock represents the object returned by `async with AsyncClient() as client`
+    mock_client_instance = Mock()
+
+    # Mock .post() with desired fake behavior
+    mock_client_instance.post = AsyncMock(side_effect=fake_post)
+
+    # Configure the async context manager behavior
+    mock_client_constructor.return_value.__aenter__.return_value = mock_client_instance
+
+
+# Your fake post logic — customize as needed
+async def fake_post(url, *args, **kwargs):
+    request = httpx.Request("POST", url)
+
+    if "moderate-text" in url:
+        return httpx.Response(
+            200, json={"category": "OK", "description": "Clean"}, request=request
+        )
+    elif "detect-language" in url:
+        return httpx.Response(200, json={"language": "English"}, request=request)
+    elif "extract-hashtags" in url:
+        return httpx.Response(200, json={"hashtags": ["ml", "test"]}, request=request)
+    else:
+        return httpx.Response(404, json={"detail": "Unknown route"}, request=request)

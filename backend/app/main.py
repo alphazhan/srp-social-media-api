@@ -3,9 +3,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator
 
-from app.routers import users, auth, posts, comments, likes, admin
+from app.config import settings
+from app.routers import users, auth, posts, comments, likes, admin, ws
 from app.utils.dependencies import lifespan
-from app.routers import ws
 
 app = FastAPI(
     title="Social Media API",
@@ -22,8 +22,7 @@ app.include_router(ws.router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://127.0.0.1:3000",
-        "http://localhost:3000",
+        settings.FRONTEND_URL
     ],  # or ["*"] for testing (not recommended in production)
     allow_credentials=True,
     allow_methods=["*"],

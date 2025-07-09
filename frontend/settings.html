@@ -36,10 +36,8 @@
 
       document.addEventListener("DOMContentLoaded", () => {
         const saveBtn = document.getElementById("save-settings");
-        console.log("FIXME1");
-        saveBtn.addEventListener("click", () => {
-          console.log("FIXME2");
 
+        saveBtn.addEventListener("click", () => {
           const username = document.getElementById("new-username").value.trim();
           const email = document.getElementById("new-email").value.trim();
           const password = document.getElementById("new-password").value.trim();
@@ -48,8 +46,6 @@
           if (username) payload.username = username;
           if (email) payload.email = email;
           if (password) payload.password = password;
-
-          console.log("FIXME payload:", JSON.stringify(payload));
 
           if (Object.keys(payload).length === 0) {
             document.getElementById("settings-result").innerText =
