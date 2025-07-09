@@ -2,21 +2,65 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Settings</title>
+    <title>Settings - SRP</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <h1>Account Settings</h1>
-
-    <div id="settings-box">
-        <input type="email" id="new-email" placeholder="New Email (optional)" />
-        <input type="password" id="new-password" placeholder="New Password" />
-        <button id="save-settings">Save Changes</button>
-        <p id="settings-result"></p>
+<body class="feed-body">
+    <div class="navbar">
+        <div class="navbar-left">
+            <h2>⚙️ Settings</h2>
+        </div>
+        <div class="navbar-right">
+            <a href="index.html">🏠 Home</a>
+            <a href="create-post.html">➕ Post</a>
+            <a href="#" id="profile-link">👤 Profile</a>
+            <button onclick="logout()">🚪 Logout</button>
+        </div>
     </div>
 
-    <a href="index.html">⬅ Back to feed</a>
+   <div class="settings-container">
+    <h2>Update Your Profile</h2>
+    <form class="settings-form">
+        <input type="text" id="new-username" placeholder="New Username">
+        <input type="email" id="new-email" placeholder="New Email">
+        <input type="password" id="new-password" placeholder="New Password">
+        <button type="button" onclick="updateProfile()">Save Changes</button>
+        <p id="settings-result" class="error-text"></p>
+    </form>
+</div>
+
 
     <script src="main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const saveBtn = document.getElementById("save-settings");
+            saveBtn.addEventListener("click", () => {
+                const username = document.getElementById("new-username").value;
+                const email = document.getElementById("new-email").value;
+                const password = document.getElementById("new-password").value;
+
+                fetch("http://localhost:8000/users/me", {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("token"),
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ username, email, password })
+                })
+                .then(res => {
+                    if (res.ok) {
+                        document.getElementById("settings-result").innerText = "✅ Profile updated!";
+                    } else {
+                        res.json().then(data => {
+                            document.getElementById("settings-result").innerText = data.detail || "Error.";
+                        });
+                    }
+                })
+                .catch(() => {
+                    document.getElementById("settings-result").innerText = "⚠️ Network error.";
+                });
+            });
+        });
+    </script>
 </body>
 </html>
