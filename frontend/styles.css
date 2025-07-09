@@ -1,337 +1,333 @@
-
 .auth-body {
-    background: linear-gradient(to right, #ddeeff, #eef5ff);
-    height: 100vh;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: linear-gradient(to right, #ddeeff, #eef5ff);
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .auth-container {
-    background-color: white;
-    padding: 30px 40px;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
+  background-color: white;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
 }
 
 .auth-container h1 {
-    margin-bottom: 24px;
-    color: #333;
+  margin-bottom: 24px;
+  color: #333;
 }
 
 .auth-container input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: border 0.2s;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border 0.2s;
 }
 
 .auth-container input:focus {
-    border-color: #5b8def;
-    outline: none;
+  border-color: #5b8def;
+  outline: none;
 }
 
-
 .auth-container button {
-    width: 100%;
-    padding: 12px;
-    background-color: #5b8def;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.2s;
+  width: 100%;
+  padding: 12px;
+  background-color: #5b8def;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .auth-container button:hover {
-    background-color: #4679db;
+  background-color: #4679db;
 }
-
 
 .message {
-    color: #c62828;
-    margin-top: 10px;
+  color: #c62828;
+  margin-top: 10px;
 }
 
-
 .link-text {
-    margin-top: 20px;
-    font-size: 14px;
+  margin-top: 20px;
+  font-size: 14px;
 }
 
 .feed-body {
-    background-color: #f2f4f8;
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
+  background-color: #f2f4f8;
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    background-color: #ffffff;
-    padding: 15px 25px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  background-color: #ffffff;
+  padding: 15px 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  align-items: center;
 }
 
 .navbar a,
 .navbar button {
-    margin-left: 15px;
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 15px;
+  margin-left: 15px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
 }
 
 .navbar a:hover,
 .navbar button:hover {
-    color: #5b8def;
+  color: #5b8def;
 }
 
 .feed-container {
-    max-width: 700px;
-    margin: 30px auto;
-    padding: 0 20px;
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 0 20px;
 }
 
 .post {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 14px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
-    margin-bottom: 20px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+  margin-bottom: 20px;
 }
 
 .post p {
-    margin-bottom: 12px;
-    font-size: 16px;
-    color: #333;
+  margin-bottom: 12px;
+  font-size: 16px;
+  color: #333;
 }
 
 .comment {
-    margin-left: 15px;
-    font-style: italic;
-    font-size: 14px;
-    color: #666;
+  margin-left: 15px;
+  font-style: italic;
+  font-size: 14px;
+  color: #666;
 }
 
 .post input[type="text"] {
-    width: 100%;
-    padding: 8px 12px;
-    margin-top: 5px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 14px;
+  width: 100%;
+  padding: 8px 12px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
 }
 
 .post button {
-    margin-top: 10px;
-    margin-right: 10px;
-    background-color: #5b8def;
-    color: white;
-    padding: 6px 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
+  margin-top: 10px;
+  margin-right: 10px;
+  background-color: #5b8def;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
 .post button:hover {
-    background-color: #4679db;
+  background-color: #4679db;
 }
 
 .form-container {
-    max-width: 600px;
-    margin: 40px auto;
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  max-width: 600px;
+  margin: 40px auto;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
 .form-container textarea {
-    width: 100%;
-    padding: 15px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    resize: vertical;
-    font-family: 'Segoe UI', sans-serif;
-    margin-bottom: 20px;
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  resize: vertical;
+  font-family: "Segoe UI", sans-serif;
+  margin-bottom: 20px;
 }
 
 .form-container button {
-    width: 100%;
-    padding: 12px;
-    background-color: #5b8def;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    cursor: pointer;
+  width: 100%;
+  padding: 12px;
+  background-color: #5b8def;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .form-container button:hover {
-    background-color: #4679db;
+  background-color: #4679db;
 }
 .post-detail-container {
-    max-width: 700px;
-    margin: 40px auto;
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  max-width: 700px;
+  margin: 40px auto;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
 .comment-section {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
 .comment-section textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    margin-top: 10px;
-    font-size: 14px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  font-size: 14px;
 }
 
 .comment-section button {
-    margin-top: 10px;
-    padding: 10px;
-    width: 100%;
-    background-color: #5b8def;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
+  margin-top: 10px;
+  padding: 10px;
+  width: 100%;
+  background-color: #5b8def;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .comment-section button:hover {
-    background-color: #4679db;
+  background-color: #4679db;
 }
 .settings-container input {
-    padding: 14px;
-    font-size: 1rem;
-    width: 100%;
-    max-width: 280px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin: 8px;
-    box-sizing: border-box;
+  padding: 14px;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 280px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 8px;
+  box-sizing: border-box;
 }
 .settings-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .settings-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
 .settings-form input {
-    padding: 12px;
-    font-size: 1rem;
-    width: 100%;
-    max-width: 300px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
+  padding: 12px;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 .settings-form button {
-    padding: 12px 24px;
-    font-size: 1rem;
-    background-color: #4d8fff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    margin-top: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  background-color: #4d8fff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 8px;
 }
 
 .settings-form button:hover {
-    background-color: #336ee6;
+  background-color: #336ee6;
 }
 .create-post-form textarea {
-    width: 100%;
-    max-width: 500px;
-    padding: 16px;
-    font-size: 1rem;
-    border: 2px solid #ccc;
-    border-radius: 12px;
-    box-sizing: border-box;
-    resize: vertical;
-    margin-bottom: 16px;
+  width: 100%;
+  max-width: 500px;
+  padding: 16px;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  box-sizing: border-box;
+  resize: vertical;
+  margin-bottom: 16px;
 }
 .create-post-form button {
-    width: 100%;
-    max-width: 500px;
-    padding: 14px;
-    font-size: 1rem;
-    background-color: #4d8fff;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+  width: 100%;
+  max-width: 500px;
+  padding: 14px;
+  font-size: 1rem;
+  background-color: #4d8fff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .create-post-form button:hover {
-    background-color: #336ee6;
+  background-color: #336ee6;
 }
 .create-post-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 30px;
-    background-color: white;
-    border-radius: 20px;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 40px auto;
 }
 
 .create-post-form textarea {
-    width: 100%;
-    max-width: 500px;
-    padding: 16px;
-    font-size: 1rem;
-    border: 2px solid #ccc;
-    border-radius: 12px;
-    box-sizing: border-box;
-    resize: vertical;
-    margin-bottom: 20px;
+  width: 100%;
+  max-width: 500px;
+  padding: 16px;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  box-sizing: border-box;
+  resize: vertical;
+  margin-bottom: 20px;
 }
 
 .create-post-form button {
-    width: 100%;
-    max-width: 500px;
-    padding: 14px;
-    font-size: 1rem;
-    background-color: #4d8fff;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+  width: 100%;
+  max-width: 500px;
+  padding: 14px;
+  font-size: 1rem;
+  background-color: #4d8fff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .create-post-form button:hover {
-    background-color: #336ee6;
+  background-color: #336ee6;
 }

@@ -1,107 +1,112 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Post - SRP</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
 
-<body class="feed-body">
+  <body class="feed-body">
     <div class="navbar">
-        <div class="navbar-left">
-            <h2>📄 Post</h2>
-        </div>
-        <div class="navbar-right">
-            <a href="index.html">🏠 Home</a>
-            <a href="settings.html">⚙️ Settings</a>
-            <a href="#" id="profile-link">👤 Profile</a>
-            <button onclick="logout()">🚪 Logout</button>
-        </div>
+      <div class="navbar-left">
+        <h2>📄 Post</h2>
+      </div>
+      <div class="navbar-right">
+        <a href="index.html">🏠 Home</a>
+        <a href="settings.html">⚙️ Settings</a>
+        <a href="#" id="profile-link">👤 Profile</a>
+        <button onclick="logout()">🚪 Logout</button>
+      </div>
     </div>
 
     <main class="post-detail-container">
-        <div id="single-post" class="post"></div>
+      <div id="single-post" class="post"></div>
 
-        <div class="comment-section">
-            <h4>💬 Comments</h4>
-            <div id="comment-list"></div>
+      <div class="comment-section">
+        <h4>💬 Comments</h4>
+        <div id="comment-list"></div>
 
-            <textarea id="new-comment" placeholder="Write a comment..." rows="3"></textarea>
-            <button id="submit-comment">Post Comment</button>
-            <p id="comment-result" class="message"></p>
-        </div>
+        <textarea
+          id="new-comment"
+          placeholder="Write a comment..."
+          rows="3"
+        ></textarea>
+        <button id="submit-comment">Post Comment</button>
+        <p id="comment-result" class="message"></p>
+      </div>
     </main>
 
     <script src="main.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const postId = urlParams.get("id");
+      document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get("id");
 
-            if (!postId) {
-                document.getElementById("single-post").innerText = "❌ Post not found.";
-                return;
-            }
+        if (!postId) {
+          document.getElementById("single-post").innerText =
+            "❌ Post not found.";
+          return;
+        }
 
-            fetch(`http://localhost:8000/posts/${postId}`, {
-                headers: {
-                    "Authorization": "Bearer " + localStorage.getItem("token")
-                }
-            })
-                .then(res => res.json())
-                .then(post => {
-                    const postDiv = document.getElementById("single-post");
-                    postDiv.innerHTML = `
+        fetch(`http://localhost:8000/posts/${postId}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+          .then((res) => res.json())
+          .then((post) => {
+            const postDiv = document.getElementById("single-post");
+            postDiv.innerHTML = `
                     <p><strong>${post.user?.username || "Anonymous"}</strong></p>
                     <p>${post.content}</p>
                 `;
-                });
+          });
 
-            fetch(`http://localhost:8000/posts/${postId}/comments`, {
-                headers: {
-                    "Authorization": "Bearer " + localStorage.getItem("token")
-                }
+        fetch(`http://localhost:8000/posts/${postId}/comments`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+          .then((res) => res.json())
+          .then((comments) => {
+            const commentList = document.getElementById("comment-list");
+            commentList.innerHTML = "";
+            comments.forEach((c) => {
+              const p = document.createElement("p");
+              p.className = "comment";
+              p.innerText = `${c.user?.username || "Anonymous"}: ${c.text}`;
+              commentList.appendChild(p);
+            });
+          });
+
+        const commentBtn = document.getElementById("submit-comment");
+        commentBtn.addEventListener("click", () => {
+          const text = document.getElementById("new-comment").value;
+          fetch(`http://localhost:8000/posts/${postId}/comments`, {
+            method: "POST",
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ text }),
+          })
+            .then((res) => {
+              if (res.ok) {
+                location.reload();
+                document.getElementById("new-comment").value = "";
+              } else {
+                return res.json().then((data) => {
+                  document.getElementById("comment-result").innerText =
+                    data.detail || "Error";
+                });
+              }
             })
-                .then(res => res.json())
-                .then(comments => {
-                    const commentList = document.getElementById("comment-list");
-                    commentList.innerHTML = "";
-                    comments.forEach(c => {
-                        const p = document.createElement("p");
-                        p.className = "comment";
-                        p.innerText = `${c.user?.username || "Anonymous"}: ${c.text}`;
-                        commentList.appendChild(p);
-                    });
-                });
-
-            const commentBtn = document.getElementById("submit-comment");
-            commentBtn.addEventListener("click", () => {
-                const text = document.getElementById("new-comment").value;
-                fetch(`http://localhost:8000/posts/${postId}/comments`, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": "Bearer " + localStorage.getItem("token"),
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ text })
-                })
-                    .then(res => {
-                        if (res.ok) {
-                            location.reload();
-                            document.getElementById("new-comment").value = '';
-                        } else {
-                            return res.json().then(data => {
-                                document.getElementById("comment-result").innerText = data.detail || "Error";
-                            });
-                        }
-                    })
-                    .catch(() => {
-                        document.getElementById("comment-result").innerText = "Network error.";
-                    });
+            .catch(() => {
+              document.getElementById("comment-result").innerText =
+                "Network error.";
             });
         });
+      });
     </script>
-</body>
-
+  </body>
 </html>

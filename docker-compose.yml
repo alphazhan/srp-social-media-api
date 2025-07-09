@@ -1,11 +1,9 @@
-version: "3.9"
-
 services:
-  api:
+  backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
-    container_name: api
+    container_name: backend
     ports:
       - "8000:8000"
     networks:
@@ -23,7 +21,7 @@ services:
     networks:
       - backend
     depends_on:
-      - api
+      - backend
 
   ml:
     build:
@@ -31,15 +29,22 @@ services:
       dockerfile: Dockerfile
     container_name: ml
     ports:
-      - "8001:8000" # ML app listens on 8000 inside container
+      - "8001:8001" # ML app listens on 8001 inside container
     networks:
       - backend
+    environment:
+      - HF_HOME=/root/.cache/huggingface
+      - TRANSFORMERS_CACHE=/root/.cache/huggingface
+      - NLTK_DATA=/root/nltk_data
+    volumes:
+      - ./.cache/huggingface:/root/.cache/huggingface
+      - ./.cache/nltk:/root/nltk_data
 
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
     volumes:
-      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     ports:
       - "9090:9090"
     networks:
@@ -56,6 +61,7 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     volumes:
       - ./monitoring/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
       - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards
 
 networks:

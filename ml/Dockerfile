@@ -1,34 +1,30 @@
-# Use official Python slim image (more stable for ML deps than alpine)
 FROM python:3.13-slim
 
-# Prevent interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install minimal build dependencies
+WORKDIR /app
+
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     curl git gcc g++ libffi-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
-WORKDIR /app
-
-# Install uv package manager
+# Install uv
 RUN pip install --no-cache-dir uv
 
-# Copy project files
-COPY pyproject.toml ./
-
-# Create virtual env and sync dependencies
+# Copy dependencies and install
+COPY pyproject.toml uv.lock ./
 RUN uv venv && \
     . .venv/bin/activate && \
     uv pip install --upgrade pip && \
     uv sync
 
-# Copy the source code
+# Copy ML application source code (after deps installed)
 COPY . .
 
-# Expose port
-EXPOSE 8000
+# Expose FastAPI port
+EXPOSE 8001
 
-# Launch FastAPI app using Uvicorn via uv
-CMD [".venv/bin/uvicorn", "ml.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD [".venv/bin/uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001"]
+
+

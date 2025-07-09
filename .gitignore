@@ -1,23 +1,82 @@
-# Python-generated files
+# PYTHON 
 __pycache__/
-*.py[oc]
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+*.eggs/
+*.manifest
+*.spec
+
+# Build & distribution
 build/
 dist/
 wheels/
-*.egg-info
+site/
 
 # Virtual environments
-.venv
+.venv/
+env/
+venv/
 
-# Pytest cache
-.pytest_cache
+# Linter / type checker cache
+.ruff_cache/
+.mypy_cache/
+.pytype/
 
-# Linter cache
-.ruff_cache
+# Pytest
+.pytest_cache/
+.cache/
 
-# Databases
-*.db
-
-# Coverage
+# Coverage reports
 .coverage
 coverage.xml
+htmlcov/
+
+# SQLite & local DBs
+*.db
+*.sqlite3
+*.log
+
+# Jupyter/IPython
+.ipynb_checkpoints/
+*.ipynb
+
+# NODE/JS
+node_modules/
+npm-debug.log*
+.yarn/
+.yarnrc.yml
+
+# FRONTEND BUILD 
+frontend/dist/
+frontend/.vite/
+frontend/.next/
+frontend/.output/
+
+# DOCKER 
+*.pid
+*.pid.lock
+docker-compose.override.yml
+*.env
+.env.*
+
+# EDITORS & OS JUNK 
+.vscode/
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# BACKUP FILES 
+*.bak
+*.tmp
+*.orig
+
+# TEST ARTIFACTS 
+*.test.json
+*.spec.ts.snap
+tests/__snapshots__/

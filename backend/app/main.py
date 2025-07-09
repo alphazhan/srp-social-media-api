@@ -1,6 +1,8 @@
 # FastAPI app entrypoint
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from prometheus_fastapi_instrumentator import Instrumentator
+
 from app.routers import users, auth, posts, comments, likes, admin
 from app.utils.dependencies import lifespan
 from app.routers import ws
@@ -11,6 +13,8 @@ app = FastAPI(
     version="1.0",
     lifespan=lifespan,
 )
+
+Instrumentator().instrument(app).expose(app)
 
 app.include_router(ws.router)
 

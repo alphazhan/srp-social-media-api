@@ -1,0 +1,36 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Databases
+*.db
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# IDE configs
+.vscode/
+.idea/
+
+# Git
+.git/
+.gitignore
+
+# Logs & temp files
+*.log
+*.tmp
+*.bak
+
+# Test artifacts
+app/tests/
+coverage.*
+htmlcov/

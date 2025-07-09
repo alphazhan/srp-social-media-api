@@ -1,0 +1,31 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor configs
+.vscode/
+.idea/
+
+# OS-specific
+*.swp
+*.bak
+*.tmp
+
+# Git
+.git/
+.gitignore
+
+# Python files (not needed in static frontend)
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Logs
+*.log
+
+# Node/npm artifacts (just in case)
+node_modules/
+dist/
+build/
+*.tsbuildinfo

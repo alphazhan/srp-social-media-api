@@ -12,6 +12,7 @@ dependencies = [
     "httpx>=0.28.1",
     "jwt>=1.4.0",
     "passlib>=1.7.4",
+    "prometheus-fastapi-instrumentator>=7.1.0",
     "pydantic>=2.11.7",
     "pytest>=8.4.1",
     "pytest-asyncio>=1.0.0",
@@ -26,11 +27,7 @@ dependencies = [
 pytest = "*"
 pytest-asyncio = "*"
 httpx = "*"
-
-[tool.uv.workspace]
-members = [
-    "ml",
-]
+prometheus-fastapi-instrumentator = "*"
 
 
 [tool.pytest.ini_options]

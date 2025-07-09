@@ -1,79 +1,82 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Profile - SRP</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body class="feed-body">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="feed-body">
     <div class="navbar">
-        <div class="navbar-left">
-            <h2>👤 Profile</h2>
-        </div>
-        <div class="navbar-right">
-            <a href="index.html">🏠 Home</a>
-            <a href="create-post.html">➕ Post</a>
-            <a href="settings.html">⚙️ Settings</a>
-            <button onclick="logout()">🚪 Logout</button>
-        </div>
+      <div class="navbar-left">
+        <h2>👤 Profile</h2>
+      </div>
+      <div class="navbar-right">
+        <a href="index.html">🏠 Home</a>
+        <a href="create-post.html">➕ Post</a>
+        <a href="settings.html">⚙️ Settings</a>
+        <button onclick="logout()">🚪 Logout</button>
+      </div>
     </div>
 
     <main class="profile-container">
-        <div class="profile-info">
-            <h3 id="username">Username: ...</h3>
-            <p id="email">Email: ...</p>
-        </div>
+      <div class="profile-info">
+        <h3 id="username">Username: ...</h3>
+        <p id="email">Email: ...</p>
+      </div>
 
-        <hr />
+      <hr />
 
-        <h4>📝 My Posts</h4>
-        <div id="user-posts"></div>
+      <h4>📝 My Posts</h4>
+      <div id="user-posts"></div>
     </main>
 
     <script src="main.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const userId = urlParams.get("id");
+      document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get("id");
 
-            if (!userId) {
-                document.querySelector(".profile-info").innerHTML = "<p>❌ No user found.</p>";
-                return;
+        if (!userId) {
+          document.querySelector(".profile-info").innerHTML =
+            "<p>❌ No user found.</p>";
+          return;
+        }
+
+        fetch(`http://localhost:8000/users/${userId}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+          .then((res) => res.json())
+          .then((user) => {
+            document.getElementById("username").innerText =
+              "Username: " + user.username;
+            document.getElementById("email").innerText =
+              "Email: " + (user.email || "Not set");
+          });
+
+        fetch("http://localhost:8000/posts", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+          .then((res) => res.json())
+          .then((posts) => {
+            const userPosts = posts.filter((p) => p.user?.id == userId);
+            const postDiv = document.getElementById("user-posts");
+            if (userPosts.length === 0) {
+              postDiv.innerHTML = "<p>No posts yet.</p>";
+              return;
             }
 
-            fetch(`http://localhost:8000/users/${userId}`, {
-                headers: {
-                    "Authorization": "Bearer " + localStorage.getItem("token")
-                }
-            })
-            .then(res => res.json())
-            .then(user => {
-                document.getElementById("username").innerText = "Username: " + user.username;
-                document.getElementById("email").innerText = "Email: " + (user.email || "Not set");
+            userPosts.forEach((post) => {
+              const div = document.createElement("div");
+              div.className = "post";
+              div.innerHTML = `<p>${post.content}</p>`;
+              postDiv.appendChild(div);
             });
-
-            fetch("http://localhost:8000/posts", {
-                headers: {
-                    "Authorization": "Bearer " + localStorage.getItem("token")
-                }
-            })
-            .then(res => res.json())
-            .then(posts => {
-                const userPosts = posts.filter(p => p.user?.id == userId);
-                const postDiv = document.getElementById("user-posts");
-                if (userPosts.length === 0) {
-                    postDiv.innerHTML = "<p>No posts yet.</p>";
-                    return;
-                }
-
-                userPosts.forEach(post => {
-                    const div = document.createElement("div");
-                    div.className = "post";
-                    div.innerHTML = `<p>${post.content}</p>`;
-                    postDiv.appendChild(div);
-                });
-            });
-        });
+          });
+      });
     </script>
-</body>
+  </body>
 </html>
