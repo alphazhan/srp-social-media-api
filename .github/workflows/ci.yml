@@ -84,7 +84,7 @@ jobs:
 
       - name: Install Prettier (and ESLint optional)
         run: |
-          pnpm init
+          [ -f package.json ] || pnpm init
           pnpm add -D prettier
           echo '{}' > .prettierrc
 
