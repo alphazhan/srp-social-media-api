@@ -42,16 +42,13 @@ async def list_posts_with_user_likes(db: AsyncSession, user_id: int) -> list[dic
     posts = result.scalars().all()
 
     # Fetch all liked post_ids for this user in one go
-    liked_ids = await db.execute(
-        select(Like.post_id).where(Like.user_id == user_id)
-    )
+    liked_ids = await db.execute(select(Like.post_id).where(Like.user_id == user_id))
     liked_set = set(post_id for (post_id,) in liked_ids.all())
 
     # Attach liked field to each post as a dict
     return [
         PostExtended(
-            **PostBase.model_validate(post).model_dump(),
-            liked=(post.id in liked_set)
+            **PostBase.model_validate(post).model_dump(), liked=(post.id in liked_set)
         )
         for post in posts
     ]

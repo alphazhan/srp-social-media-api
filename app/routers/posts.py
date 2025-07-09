@@ -30,13 +30,13 @@ async def create_post(
 async def get_posts(db: AsyncSession = Depends(get_db)):
     return await list_all_posts(db)
 
+
 @router.get("/feed", response_model=list[post_schema.PostExtended])
 async def get_posts_with_user_likes(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     return await list_posts_with_user_likes(db, current_user.id)
-
 
 
 @router.put("/{post_id}", response_model=post_schema.PostBase)

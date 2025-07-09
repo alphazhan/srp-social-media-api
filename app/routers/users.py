@@ -30,7 +30,6 @@ async def update_my_profile(
     return await update_user_profile(current_user.id, update, db)
 
 
-
 @router.get("/{user_id}", response_model=user_schema.UserBase)
 async def get_user(user_id: int, db: AsyncSession = Depends(get_db)):
     return await get_user_by_id(user_id, db)
