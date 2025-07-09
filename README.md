@@ -59,6 +59,14 @@ chmod +x ./frontend_run.sh # Give permissions
 
 Then navigate to http://localhost:3000/ to enter the website.
 
+### ML
+
+Run (in another terminal):
+```bash
+chmod +x ./ml_run.sh # Give permissions
+./ml_run.sh
+```
+
 ---
 
 ## Database

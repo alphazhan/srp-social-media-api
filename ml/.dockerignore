@@ -1,0 +1,41 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# IDE/editor folders
+.vscode/
+.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Logs & temp files
+*.log
+*.tmp
+*.bak
+
+# Git
+.git/
+.gitignore
+
+# Tests (optional)
+tests/
+app/tests/
+
+# Model checkpoints or large local data (optional)
+*.pt
+*.ckpt
+*.onnx
+*.bin
+*.h5
+.cache/
+datasets/

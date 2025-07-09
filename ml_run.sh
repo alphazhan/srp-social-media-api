@@ -1,0 +1,1 @@
+uv run -m uvicorn ml.main:app --port 8001 --reload
