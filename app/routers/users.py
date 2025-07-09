@@ -26,25 +26,25 @@ async def get_user(user_id: int, db: AsyncSession = Depends(get_db)):
     return await get_user_by_id(user_id, db)
 
 
-@router.post("/users", response_model=user_schema.UserBase)
+@router.post("", response_model=user_schema.UserBase)
 async def register_user_direct(
     user_in: user_schema.UserCreate, db: AsyncSession = Depends(get_db)
 ):
     return await create_user(user_in, db)
 
 
-@router.put("/users/{user_id}", response_model=user_schema.UserBase)
+@router.put("/{user_id}", response_model=user_schema.UserBase)
 async def update_profile(
     user_id: int, update: user_schema.UserUpdate, db: AsyncSession = Depends(get_db)
 ):
     return await update_user_profile(user_id, update, db)
 
 
-@router.delete("/users/{user_id}", status_code=204)
+@router.delete("/{user_id}", status_code=204)
 async def delete_profile(user_id: int, db: AsyncSession = Depends(get_db)):
     await delete_user(user_id, db)
 
 
-@router.get("/users/{user_id}/posts", response_model=list[post_schema.PostBase])
+@router.get("/{user_id}/posts", response_model=list[post_schema.PostBase])
 async def get_user_posts(user_id: int, db: AsyncSession = Depends(get_db)):
     return await get_posts_by_user(user_id, db)

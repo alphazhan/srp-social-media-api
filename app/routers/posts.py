@@ -49,11 +49,11 @@ async def delete_post(
     await delete_post_for_user(post_id, current_user.id, db)
 
 
-@router.get("/posts/{post_id}", response_model=post_schema.PostBase)
+@router.get("/{post_id}", response_model=post_schema.PostBase)
 async def get_post(post_id: int, db: AsyncSession = Depends(get_db)):
     return await get_post_by_id(post_id, db)
 
 
-@router.get("/posts/user/{user_id}", response_model=list[post_schema.PostBase])
+@router.get("/user/{user_id}", response_model=list[post_schema.PostBase])
 async def get_posts_by_user(user_id: int, db: AsyncSession = Depends(get_db)):
     return await get_posts_by_user_id(user_id, db)

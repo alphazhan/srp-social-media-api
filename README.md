@@ -23,6 +23,8 @@ A full-featured REST API for a social media backend, built with FastAPI and SQLi
 
 ## Getting Started
 
+### Backend
+
 ```bash
 # Download the project
 git clone https://github.com/alphazhan/srp-social-media-api.git
@@ -36,11 +38,26 @@ uv sync # install all dependencies listed in pyproject.toml
 uv run -m uvicorn app.main:app --reload
 
 # Or run the app through a script:
-chmod +x ./uvicorn_run.sh
+chmod +x ./uvicorn_run.sh # Give permissions
 ./uvicorn_run.sh
 ```
 
 Then navigate to http://localhost:8000/docs to enter Swagger UI FastAPI mode.
+
+### Frontend
+
+Run (in another terminal):
+
+```bash
+cd frontend
+python3 -m http.server 3000
+
+# Or run the frontend through a script:
+chmod +x ./frontend_run.sh # Give permissions
+./frontend_run.sh
+```
+
+Then navigate to http://localhost:3000/ to enter the website.
 
 ---
 
