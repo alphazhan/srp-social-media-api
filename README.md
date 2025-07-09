@@ -139,7 +139,6 @@ uv run -m pytest
 - [x] GET /posts/{post_id}/likes - Get all likes for a post
 - [x] PUT /comments/{comment_id} - Edit comment
 - [x] DELETE /comments/{comment_id} - Delete comment
-- [x] `total_posts` of any `user` is always equal to 0. Fix it.
 
 ### B. Authentication and Authorization System
 

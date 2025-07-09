@@ -2,32 +2,59 @@ import pytest
 
 
 @pytest.mark.asyncio
-async def test_get_me(client):
-    # Register the user
-    await client.post(
-        "/auth/register",
-        json={
-            "username": "meuser",
-            "email": "me@example.com",
-            "full_name": "Me User",
-            "password": "pass123",
-        },
-    )
-
-    # Login — must use form fields (OAuth2 style)
-    login = await client.post(
-        "/auth/login",
-        data={"username": "me@example.com", "password": "pass123"},
-    )
-
-    assert login.status_code == 200, f"Login failed: {login.text}"
-    token = login.json()["access_token"]
-
-    # Authenticated request
-    response = await client.get(
-        "/users/me",
-        headers={"Authorization": f"Bearer {token}"},
-    )
-
+async def test_get_me(client, auth_headers, unique_user_data):
+    response = await client.get("/users/me", headers=auth_headers)
     assert response.status_code == 200
-    assert response.json()["email"] == "me@example.com"
+    assert response.json()["email"] == unique_user_data["email"]
+
+
+@pytest.mark.asyncio
+async def test_get_user_by_id(client, auth_headers, unique_user_data):
+    # Get current user to get ID
+    me = await client.get("/users/me", headers=auth_headers)
+    user_id = me.json()["id"]
+
+    res = await client.get(f"/users/{user_id}")
+    assert res.status_code == 200
+    assert res.json()["username"] == unique_user_data["username"]
+
+
+@pytest.mark.asyncio
+async def test_edit_user_profile(client, auth_headers, unique_user_data):
+    me = await client.get("/users/me", headers=auth_headers)
+    user_id = me.json()["id"]
+
+    update_data = {
+        "full_name": "Updated User",
+        "bio": "I love testing",
+        "profile_image_url": "https://example.com/avatar.png"
+    }
+
+    res = await client.put(f"/users/{user_id}", json=update_data, headers=auth_headers)
+    assert res.status_code == 200
+    assert res.json()["bio"] == "I love testing"
+
+
+@pytest.mark.asyncio
+async def test_delete_user_account(client, auth_headers, unique_user_data):
+    me = await client.get("/users/me", headers=auth_headers)
+    user_id = me.json()["id"]
+
+    res = await client.delete(f"/users/{user_id}", headers=auth_headers)
+    assert res.status_code == 204
+
+    check = await client.get(f"/users/{user_id}")
+    assert check.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_get_user_posts(client, auth_headers):
+    me = await client.get("/users/me", headers=auth_headers)
+    user_id = me.json()["id"]
+
+    # Create a post first
+    await client.post("/posts/", json={"content": "User Post"}, headers=auth_headers)
+
+    res = await client.get(f"/users/{user_id}/posts")
+    assert res.status_code == 200
+    assert any(p["content"] == "User Post" for p in res.json())
