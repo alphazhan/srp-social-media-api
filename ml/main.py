@@ -37,7 +37,7 @@ async def load_models():
     model
     _model
 
-    print("I AM READY")
+    print("Three models are loaded")
 
 
 def main():

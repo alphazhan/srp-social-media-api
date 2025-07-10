@@ -256,10 +256,12 @@ function loadUserProfile(userId) {
 
 // Save settings
 function saveSettings() {
+  const username = document.getElementById("new-username").value;
   const email = document.getElementById("new-email").value;
   const password = document.getElementById("new-password").value;
 
   const payload = {};
+  if (username) payload.username = username;
   if (email) payload.email = email;
   if (password) payload.password = password;
 
