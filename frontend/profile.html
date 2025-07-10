@@ -56,14 +56,14 @@
               "Email: " + (user.email || "Not set");
           });
 
-        fetch("http://localhost:8000/posts", {
+        fetch(`http://localhost:8000/users/${userId}/posts`, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         })
           .then((res) => res.json())
           .then((posts) => {
-            const userPosts = posts.filter((p) => p.user?.id == userId);
+            const userPosts = posts.filter((p) => p.user_id == userId);
             const postDiv = document.getElementById("user-posts");
             if (userPosts.length === 0) {
               postDiv.innerHTML = "<p>No posts yet.</p>";
